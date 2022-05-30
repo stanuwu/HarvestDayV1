@@ -58,18 +58,23 @@ def collect():
         moveTo(pos[0], pos[1])
         pyautogui.mouseDown()
 
-        loc = [0, 0]
+        loc = [centerX, centerY]
         while loc[0] != -1:
-            loc = findNext(2)
-            moveTo(loc[0], loc[1])
-            pyautogui.move(0, wheatDF+100, 0.2)
-            pyautogui.move(50, -100, 0.2)
+            loc = findNext(0.2)
+            if loc[0] != -1:
+                moveTo(loc[0], loc[1])
+                pyautogui.move(0, wheatDF, 0.2)
+                pyautogui.move(0, -100, 0.2)
+                pyautogui.move(0, 200, 0.2)
+                pyautogui.move(0, -100, 0.2)
+                pyautogui.move(100, 0, 0.2)
+                pyautogui.move(-200, 0, 0.2)
 
         pyautogui.mouseUp()
 
 
 def findNext(x):
-    for i in range(x*100):
+    for i in range(round(x*100)):
         loc = imagesearch("./sample/wheat.png", 0.4)
         time.sleep(x/100)
         if loc[0] != -1:
@@ -78,9 +83,9 @@ def findNext(x):
 
 
 def farmWheat():
-    pos = [0, 0]
+    pos = [centerX, centerY]
     while True:
-        pos = imagesearch("./sample/wheat.png")
+        pos = imagesearch("./sample/wheat.png", 0.7)
         if pos[0] != -1:
             break
     moveTo(pos[0], pos[1]+wheatDF)
