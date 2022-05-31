@@ -99,7 +99,7 @@ def replant():
 
 def findNext(x):
     for i in range(round(x*100)):
-        loc = imagesearch("./sample/wheat.png", 0.4)
+        loc = imagesearch("./sample/wheat.png", 0.5)
         time.sleep(x/100)
         if loc[0] != -1:
             return loc
@@ -111,7 +111,7 @@ def findNextEmpty(x):
         loc = imagesearch("./sample/field.png", 0.6)
         time.sleep(x/100)
         if loc[0] == -1:
-          loc = imagesearch("./sample/field2.png", 0.6)
+            loc = imagesearch("./sample/field2.png", 0.6)
         if loc[0] != -1:
             return loc
     return [-1, -1]
@@ -120,17 +120,19 @@ def findNextEmpty(x):
 def farmWheat():
     pos = findNext(0.2)
     if pos[0] != -1:
-      print(f"Wheat Grown! Starting Harvest @{pos}")
-      moveTo(pos[0], pos[1]+wheatDF)
-      pyautogui.click()
-      collect()
+        print(f"Wheat Grown! Starting Harvest @{pos}")
+        moveTo(pos[0], pos[1]+wheatDF)
+        pyautogui.click()
+        collect()
 
     pos = findNextEmpty(0.2)
     if pos[0] != -1:
-      print(f"Wheat Harvested! Replanting @{pos}")
-      moveTo(pos[0], pos[1]+wheatDF)
-      pyautogui.click()
-      replant()
+        print(f"Wheat Harvested! Replanting @{pos}")
+        moveTo(pos[0], pos[1]+wheatDF)
+        pyautogui.click()
+        replant()
+
+    tryCenter()
 
 
 ### loop ###
