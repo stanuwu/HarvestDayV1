@@ -101,6 +101,8 @@ def findNext(x):
     for i in range(round(x*100)):
         loc = imagesearch("./sample/wheat.png", 0.5)
         time.sleep(x/100)
+        if loc[0] == -1:
+            loc = imagesearch("./sample/wheat2.png", 0.5)
         if loc[0] != -1:
             return loc
     return [-1, -1]
