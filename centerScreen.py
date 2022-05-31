@@ -49,7 +49,7 @@ def tryCenter():
 
 
 ### farm ###
-wheatDF = 25
+wheatDF = 20
 
 
 def collect():
@@ -60,8 +60,9 @@ def collect():
 
         loc = [centerX, centerY]
         while loc[0] != -1:
-            loc = findNext(0.2)
+            loc = findNext(0.3)
             if loc[0] != -1:
+                print(f"- Wheat Group @{loc}")
                 moveTo(loc[0], loc[1])
                 pyautogui.move(0, wheatDF, 0.2)
                 pyautogui.move(0, -100, 0.2)
@@ -69,6 +70,29 @@ def collect():
                 pyautogui.move(0, -100, 0.2)
                 pyautogui.move(100, 0, 0.2)
                 pyautogui.move(-200, 0, 0.2)
+
+        pyautogui.mouseUp()
+
+
+def replant():
+    pos = imagesearch("./sample/plant.png", 0.6)
+    if pos[0] != -1:
+        moveTo(pos[0], pos[1])
+        pyautogui.mouseDown()
+
+        loc = [centerX, centerY]
+        while loc[0] != -1:
+            loc = findNextEmpty(0.2)
+            if loc[0] != -1:
+                print(f"- Empty Field @{loc}")
+                moveTo(loc[0], loc[1])
+                pyautogui.move(wheatDF, wheatDF, 0.4)
+                pyautogui.move(0, -100, 0.4)
+                pyautogui.move(0, 200, 0.4)
+                pyautogui.move(0, -100, 0.4)
+                pyautogui.move(100, 0, 0.4)
+                pyautogui.move(-200, 0, 0.4)
+                pyautogui.move(100, 0, 0.4)
 
         pyautogui.mouseUp()
 
@@ -82,16 +106,31 @@ def findNext(x):
     return [-1, -1]
 
 
+def findNextEmpty(x):
+    for i in range(round(x*100)):
+        loc = imagesearch("./sample/field.png", 0.6)
+        time.sleep(x/100)
+        if loc[0] == -1:
+          loc = imagesearch("./sample/field2.png", 0.6)
+        if loc[0] != -1:
+            return loc
+    return [-1, -1]
+
+
 def farmWheat():
-    pos = [centerX, centerY]
-    while True:
-        pos = imagesearch("./sample/wheat.png", 0.7)
-        if pos[0] != -1:
-            break
-    moveTo(pos[0], pos[1]+wheatDF)
-    pyautogui.click()
-    collect()
-    print(pos)
+    pos = findNext(0.2)
+    if pos[0] != -1:
+      print(f"Wheat Grown! Starting Harvest @{pos}")
+      moveTo(pos[0], pos[1]+wheatDF)
+      pyautogui.click()
+      collect()
+
+    pos = findNextEmpty(0.2)
+    if pos[0] != -1:
+      print(f"Wheat Harvested! Replanting @{pos}")
+      moveTo(pos[0], pos[1]+wheatDF)
+      pyautogui.click()
+      replant()
 
 
 ### loop ###
